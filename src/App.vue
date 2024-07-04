@@ -40,12 +40,14 @@ onMounted(fetchCountries)
     const userLogin = () => {
       // Implement login logic here
       login(username,password)
-      console.log("Logged ", isLoggedIn())
+      showLogin.value = false;
+      console.log("Logged ", isLoggedIn)
     };
 
     const userRegister = () => {
       // Implement registration logic here
       register(name,regUsername,regPassword)
+      showRegister.value = false
       console.log('Register clicked');
     };
 
@@ -54,104 +56,103 @@ onMounted(fetchCountries)
 
 <template>
 
-<div class="header">
+  <div class="header">
 
-<div class="lHeader">
-<span>Home</span>
-<span>About</span>
-</div>
-
-<div class="rHeader">
-      <div v-if="!isLogged">
-        <button @click="showLoginForm">Sign In</button>
-        <button @click="showRegisterForm">Register</button>
-      </div>
-      <div v-else>
-        <h3>{{ currentUser.name }}</h3>
-        <button @click="logout">Logout</button>
-      </div>
-
-    </div>
-</div>
-<div class="container">
-  <div v-if="showLogin" class="form-container">
-      <!-- Login Form -->
-      <form @submit.prevent="userLogin" class="form">
-        <div class="form-group">
-          <label for="username">Username:</label>
-          <input type="text" id="username" v-model="username">
-        </div>
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <input type="password" id="password" v-model="password">
-        </div>
-        <button type="submit">Login</button>
-      </form>
-    </div>
-
-    <div v-if="showRegister" class="form-container">
-      <!-- Register Form -->
-      <form @submit.prevent="userRegister" class="form">
-        <div class="form-group">
-          <label for="regName">Name:</label>
-          <input type="text" id="regName" v-model="name">
-        </div>
-        <div class="form-group">
-          <label for="regUsername">Username:</label>
-          <input type="text" id="regUsername" v-model="regUsername">
-        </div>
-        <div class="form-group">
-          <label for="regPassword">Password:</label>
-          <input type="password" id="regPassword" v-model="regPassword">
-        </div>
-        <button type="submit">Register</button>
-      </form>
-    </div>
-
-
-<div v-if="!(showLogin || showRegister)" >
-<div class="main">
-
-  <div class="mainHeader">
-  <h1>Pinia Country/Capital</h1>
-  <img src="./assets/Pinialogo.svg" />
+  <div class="lHeader">
+  <span>Home</span>
+  <span>About</span>
   </div>
 
-  <br/>
-  <!-- <input type="text" v-model="search" @input="fetchCities" placeholder="Type a city...">
-    <ul v-if="showSuggestions">
-        <li v-for="city in cities" @click="selectCity(city)">{{ city }}</li>
-    </ul> -->
+  <div class="rHeader">
+        <div v-if="!currentUser">
+          <button @click="showLoginForm">Sign In</button>
+          <button @click="showRegisterForm">Register</button>
+        </div>
+        <div v-else>
+          <button>{{ currentUser.name }}</button>
+          <button @click="logout">Logout</button>
+        </div>
 
-    <!-- <input v-model="search" @input="fetchCities" placeholder="Type a city..." type="text"  style="width: 500px;"/>
-      <ul v-if="showSuggestions">
-        <li v-for="city in cities" @click="selectCity(city)">{{ city }}</li>
-    </ul> -->
+      </div>
+  </div>
+  <div class="container" v-if="false">
+    <div v-if="showLogin" class="form-container">
+        <!-- Login Form -->
+        <form @submit.prevent="userLogin" class="form">
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" v-model="username">
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" v-model="password">
+          </div>
+          <button type="submit">Login</button>
+        </form>
+      </div>
 
-  <div class="mainInput">
-    <div class="city">
-      <span style="padding:20px">Country : </span>
-      <select v-model="selectedCountry" @change="onCountryChange" style="width: 400px;">
-      <option disabled value="">Select a country</option>
-      <option v-for="country in countries" :key="country" :value="country">{{ country }}</option>
-    </select>
+      <div v-if="showRegister" class="form-container">
+        <!-- Register Form -->
+        <form @submit.prevent="userRegister" class="form">
+          <div class="form-group">
+            <label for="regName">Name:</label>
+            <input type="text" id="regName" v-model="name">
+          </div>
+          <div class="form-group">
+            <label for="regUsername">Username:</label>
+            <input type="text" id="regUsername" v-model="regUsername">
+          </div>
+          <div class="form-group">
+            <label for="regPassword">Password:</label>
+            <input type="password" id="regPassword" v-model="regPassword">
+          </div>
+          <button type="submit">Register</button>
+        </form>
+      </div>
 
+
+  <div v-if="!(showLogin || showRegister)" >
+  <div class="main">
+
+    <div class="mainHeader">
+    <h1>Pinia Country/Capital</h1>
+    <img src="./assets/Pinialogo.svg" />
     </div>
+
     <br/>
-       <!-- Spinner component -->
-       <div v-if="loading" class="spinner">
-      <div class="spinner-icon"></div>
-      <div>Loading...</div>
-      </div>
-      <div v-else>
-        <!-- <div v-if="countryCapital" class="Search"> -->
-      <h2 v-if="countryCapital" >Capital of {{ selectedCountry }}  : {{ countryCapital }}</h2>
-    </div>      
-  </div>
-</div>
-</div>
-</div>
+    <!-- <input type="text" v-model="search" @input="fetchCities" placeholder="Type a city...">
+      <ul v-if="showSuggestions">
+          <li v-for="city in cities" @click="selectCity(city)">{{ city }}</li>
+      </ul> -->
 
+      <!-- <input v-model="search" @input="fetchCities" placeholder="Type a city..." type="text"  style="width: 500px;"/>
+        <ul v-if="showSuggestions">
+          <li v-for="city in cities" @click="selectCity(city)">{{ city }}</li>
+      </ul> -->
+
+    <div class="mainInput">
+      <div class="city">
+        <span style="padding:20px">Country : </span>
+        <select v-model="selectedCountry" @change="onCountryChange" style="width: 400px;">
+        <option disabled value="">Select a country</option>
+        <option v-for="country in countries" :key="country" :value="country">{{ country }}</option>
+      </select>
+
+      </div>
+      <br/>
+        <!-- Spinner component -->
+        <div v-if="loading" class="spinner">
+        <div class="spinner-icon"></div>
+        <div>Loading...</div>
+        </div>
+        <div v-else>
+          <!-- <div v-if="countryCapital" class="Search"> -->
+        <h2 v-if="countryCapital" >Capital of {{ selectedCountry }}  : {{ countryCapital }}</h2>
+      </div>      
+    </div>
+  </div>
+  </div>
+  </div>
 </template>
 
 <style scoped>
@@ -307,6 +308,7 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin-right:10px
 }
 
 button:hover {

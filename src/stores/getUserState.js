@@ -7,7 +7,7 @@ export const useAuthStore = defineStore('auth', () => {
 
 
     const users = ref(JSON.parse(localStorage.getItem('users') )||[])
-    const currentUser = ref({})
+    const currentUser = ref(null)
 
     const isLoggedIn =  computed(() => !!currentUser.value)
   
@@ -33,7 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
       }
     }
     const logout = () => {
-      this.currentUser = null;
+      currentUser.value = null;
     }
     return {users,currentUser,isLoggedIn,login,register,logout}
 }
